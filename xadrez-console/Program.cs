@@ -8,17 +8,20 @@ namespace xadrez_console
     {
         static void Main(string[] args)
         {
-            Tabuleiro tab = new Tabuleiro(8, 8);
+            PartidaDeXadrez partida = new PartidaDeXadrez();
+            while (!partida.terminada)
+            {
+                Console.Clear();
+                Tela.ImprimirTabuleiro(partida.Tab);
+                Console.WriteLine();
+                Console.Write("Posição da peça a ser movimentada: ");
+                Posicao origem = Tela.LerPosicaoXadrez().ToPosicao();
+                Console.Write("Destino da peça a ser movimentada: ");
+                Posicao destino = Tela.LerPosicaoXadrez().ToPosicao();
 
-            tab.ColocarPeca(new Torre(tab, Cor.Preta), new Posicao(0, 0));
-            tab.ColocarPeca(new Torre(tab, Cor.Preta), new Posicao(0, 7));
-            tab.ColocarPeca(new Torre(tab, Cor.Branca), new Posicao(7, 0));
-            tab.ColocarPeca(new Torre(tab, Cor.Branca), new Posicao(7, 7));
-
-            tab.ColocarPeca(new Rei(tab, Cor.Preta), new Posicao(0, 4));
-            tab.ColocarPeca(new Rei(tab, Cor.Branca), new Posicao(7, 4));
-
-            Tela.ImprimirTabuleiro(tab);
+                partida.ExecutarMovimento(origem, destino);
+            }
+            
             Console.WriteLine();
 
         }
