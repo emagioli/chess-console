@@ -35,6 +35,7 @@
                 throw new TabuleiroException("Já existe uma peça nessa posição!");
             }
             Pecas[pos.Linha, pos.Coluna] = peca;
+            peca.Posicao = pos; // linha faltante
         }
 
         public Peca RetirarPeca(Posicao pos)

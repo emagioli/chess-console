@@ -15,8 +15,8 @@ namespace xadrez
             Tab = new Tabuleiro(8, 8);
             turno = 1;
             jogadorAtual = Cor.Branca;
-            ColocarPecas();
             terminada = false;
+            ColocarPecas();
         }
         public void ExecutarMovimento(Posicao origem, Posicao destino)
         {
