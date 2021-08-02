@@ -48,7 +48,7 @@ namespace xadrez_console
         }
         public static PosicaoXadrez LerPosicaoXadrez()
         {
-            string s = Console.ReadLine();
+            string s = Console.ReadLine().Trim().ToLower(); // adicionei o trim para evitar erros quando a string digitada possui espaço nas extremidades
             char coluna = s[0];
             int linha = int.Parse($"{s[1]}"); //havia um espaço entre a chave } e "
             return new PosicaoXadrez(coluna, linha); 
