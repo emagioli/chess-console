@@ -8,7 +8,6 @@ namespace xadrez_console
     {
         static void Main(string[] args)
         {
-
             try
             {
                 PartidaDeXadrez partida = new PartidaDeXadrez();
@@ -53,7 +52,6 @@ namespace xadrez_console
                 Console.WriteLine(e.Message);
             }
             Console.WriteLine();
-
         }
     }
 }

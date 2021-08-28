@@ -26,7 +26,6 @@ namespace xadrez
             ColocarPecas();
         }
 
-
         private void MudarJogador()
         {
             _ = jogadorAtual == Cor.Branca ? jogadorAtual = Cor.Preta : jogadorAtual = Cor.Branca;
@@ -42,6 +41,26 @@ namespace xadrez
             {
                 capturadas.Add(pecaCapturada);
             }
+
+            //#jogadaespecial roque pequeno
+            if (p is Rei && destino.Coluna == origem.Coluna + 2)
+            {
+                Posicao origemTorre = new Posicao(origem.Linha, origem.Coluna + 3);
+                Posicao destinoTorre = new Posicao(origem.Linha, origem.Coluna + 1);
+                Peca Torre = Tab.RetirarPeca(origemTorre);
+                Torre.IncrementarQuantidadeMovimentos();
+                Tab.ColocarPeca(Torre, destinoTorre);
+            }
+            //#jogadaespecial roque grande
+            if (p is Rei && destino.Coluna == origem.Coluna - 2)
+            {
+                Posicao origemTorre = new Posicao(origem.Linha, origem.Coluna - 4);
+                Posicao destinoTorre = new Posicao(origem.Linha, origem.Coluna - 1);
+                Peca Torre = Tab.RetirarPeca(origemTorre);
+                Torre.IncrementarQuantidadeMovimentos();
+                Tab.ColocarPeca(Torre, destinoTorre);
+            }
+
             return pecaCapturada;
         }
 
@@ -57,6 +76,25 @@ namespace xadrez
             }
 
             Tab.ColocarPeca(p, origem);
+
+            //#jogadaespecial roque pequeno
+            if (p is Rei && destino.Coluna == origem.Coluna + 2)
+            {
+                Posicao origemTorre = new Posicao(origem.Linha, origem.Coluna + 3);
+                Posicao destinoTorre = new Posicao(origem.Linha, origem.Coluna + 1);
+                Peca Torre = Tab.RetirarPeca(destinoTorre);
+                Torre.DecrementarQuantidadeMovimentos();
+                Tab.ColocarPeca(Torre, origemTorre);
+            }
+            //#jogadaespecial roque grande
+            if (p is Rei && destino.Coluna == origem.Coluna - 2)
+            {
+                Posicao origemTorre = new Posicao(origem.Linha, origem.Coluna - 4);
+                Posicao destinoTorre = new Posicao(origem.Linha, origem.Coluna - 1);
+                Peca Torre = Tab.RetirarPeca(destinoTorre);
+                Torre.DecrementarQuantidadeMovimentos();
+                Tab.ColocarPeca(Torre, origemTorre);
+            }
         }
 
         public void RealizarJogada(Posicao origem, Posicao destino)
@@ -170,10 +208,10 @@ namespace xadrez
                 throw new TabuleiroException($"Não tem rei da cor {cor} no tabuleiro.");
             }
 
-            foreach (Peca x in PecasEmJogo(Adversaria(cor)))
+            foreach (Peca x in PecasEmJogo(Adversaria(cor))) //para cada peça do adversario
             {
                 bool[,] mat = x.MovimentosPossiveis();
-                if (mat[R.Posicao.Linha, R.Posicao.Coluna])
+                if (mat[R.Posicao.Linha, R.Posicao.Coluna]) //verifica se a posicao onde o rei está é um movimento possivel para essa peça adversaria
                 {
                     return true;
                 }
@@ -220,14 +258,43 @@ namespace xadrez
 
         private void ColocarPecas()
         {
-            ColocarNovaPeca('h', 8, new Torre(Tab, Cor.Preta));
-            ColocarNovaPeca('a', 8, new Torre(Tab, Cor.Preta));
             ColocarNovaPeca('a', 1, new Torre(Tab, Cor.Branca));
             ColocarNovaPeca('h', 1, new Torre(Tab, Cor.Branca));
+            ColocarNovaPeca('a', 8, new Torre(Tab, Cor.Preta));
+            ColocarNovaPeca('h', 8, new Torre(Tab, Cor.Preta));
 
-            ColocarNovaPeca('e', 8, new Rei(Tab, Cor.Preta));
-            ColocarNovaPeca('e', 1, new Rei(Tab, Cor.Branca));
+            ColocarNovaPeca('b', 1, new Cavalo(Tab, Cor.Branca));
+            ColocarNovaPeca('g', 1, new Cavalo(Tab, Cor.Branca));
+            ColocarNovaPeca('b', 8, new Cavalo(Tab, Cor.Preta));
+            ColocarNovaPeca('g', 8, new Cavalo(Tab, Cor.Preta));
 
+            ColocarNovaPeca('c', 1, new Bispo(Tab, Cor.Branca));
+            ColocarNovaPeca('f', 1, new Bispo(Tab, Cor.Branca));
+            ColocarNovaPeca('c', 8, new Bispo(Tab, Cor.Preta));
+            ColocarNovaPeca('f', 8, new Bispo(Tab, Cor.Preta));
+
+            ColocarNovaPeca('d', 1, new Dama(Tab, Cor.Branca));
+            ColocarNovaPeca('d', 8, new Dama(Tab, Cor.Preta));
+
+            ColocarNovaPeca('e', 1, new Rei(Tab, Cor.Branca, this));
+            ColocarNovaPeca('e', 8, new Rei(Tab, Cor.Preta, this));
+
+            ColocarNovaPeca('a', 2, new Peao(Tab, Cor.Branca));
+            ColocarNovaPeca('b', 2, new Peao(Tab, Cor.Branca));
+            ColocarNovaPeca('c', 2, new Peao(Tab, Cor.Branca));
+            ColocarNovaPeca('d', 2, new Peao(Tab, Cor.Branca));
+            ColocarNovaPeca('e', 2, new Peao(Tab, Cor.Branca));
+            ColocarNovaPeca('f', 2, new Peao(Tab, Cor.Branca));
+            ColocarNovaPeca('g', 2, new Peao(Tab, Cor.Branca));
+            ColocarNovaPeca('h', 2, new Peao(Tab, Cor.Branca));
+            ColocarNovaPeca('a', 7, new Peao(Tab, Cor.Preta));
+            ColocarNovaPeca('b', 7, new Peao(Tab, Cor.Preta));
+            ColocarNovaPeca('c', 7, new Peao(Tab, Cor.Preta));
+            ColocarNovaPeca('d', 7, new Peao(Tab, Cor.Preta));
+            ColocarNovaPeca('e', 7, new Peao(Tab, Cor.Preta));
+            ColocarNovaPeca('f', 7, new Peao(Tab, Cor.Preta));
+            ColocarNovaPeca('g', 7, new Peao(Tab, Cor.Preta));
+            ColocarNovaPeca('h', 7, new Peao(Tab, Cor.Preta));
         }
     }
 }
